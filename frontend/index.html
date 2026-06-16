@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zaryah+ Hifz Tracker</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <div class="background-glow"></div>
+    
+    <!-- Left Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-content">
+            <div class="sidebar-header">
+                <h3>Tools</h3>
+                <button class="sidebar-close" id="sidebarClose">✕</button>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="nav-item active" id="trackerNav" data-view="tracker">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-label">Tracker</span>
+                </button>
+                <button class="nav-item" id="calculatorNav" data-view="calculator">
+                    <span class="nav-icon">🧮</span>
+                    <span class="nav-label">Hifz Calculator</span>
+                </button>
+                <button class="nav-item" id="badgesNav" data-view="badges">
+                    <span class="nav-icon">🏅</span>
+                    <span class="nav-label">Milestone Badges</span>
+                </button>
+                <button class="nav-item" id="studyNav" data-view="study">
+                    <span class="nav-icon">📖</span>
+                    <span class="nav-label">Study Mode</span>
+                </button>
+            </nav>
+        </div>
+    </aside>
+
+    <!-- Sidebar Toggle Button -->
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="logo">></span>
+                <h1>Zaryah<span>+</span></h1>
+            </div>
+            <span class="status-badge">Tracker Online</span>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <p class="time-greeting">Assalamu alaikum, manage your students</p>
+        <h2>Hifz Progress Tracker</h2>
+        <p class="subtitle">Track and inspire your students to completion</p>
+    </section>
+
+    <section class="stats-container">
+        <div class="stat-card">
+            <div class="stat-icon">📊</div>
+            <h3>Total Students</h3>
+            <p class="stat-value"><span id="totalStudents">0</span></p>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">🎯</div>
+            <h3>Active Students</h3>
+            <p class="stat-value"><span id="activeStudents">0</span></p>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">✅</div>
+            <h3>Completed</h3>
+            <p class="stat-value"><span id="completedStudents">0</span></p>
+        </div>
+    </section>
+
+    <section class="form-section">
+        <div class="form-card">
+            <h2>Add Student</h2>
+            <div class="form-group">
+                <input id="studentName" type="text" placeholder="Student Name" class="form-input" />
+                <input id="studentJuz" type="number" min="1" max="30" placeholder="Juz (1-30)" class="form-input" />
+                <button id="addStudentBtn" class="btn-primary">Add Student</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="students-section">
+        <h2>Student Progress</h2>
+        <div id="studentContainer" class="student-list"></div>
+    </section>
+
+    <!-- Hifz Calculator Section -->
+    <section id="calculatorSection" class="calculator-section" style="display: none;">
+        <h2>Hifz Calculator</h2>
+        <p class="calculator-subtitle">Calculate your estimated completion date</p>
+        
+        <div class="calculator-card">
+            <div class="calculator-group">
+                <label for="dailyPages">Daily Memorization Pace</label>
+                <div class="input-with-unit">
+                    <input id="dailyPages" type="number" min="0.1" step="0.1" placeholder="0.5" value="0.5" class="form-input" />
+                    <span class="unit-label">pages/day</span>
+                </div>
+                <small class="input-hint">Enter pages per day (e.g., 0.5 = half page)</small>
+            </div>
+
+            <div class="calculator-group">
+                <label for="totalPages">Total Pages to Memorize</label>
+                <div class="input-with-unit">
+                    <input id="totalPages" type="number" min="1" value="604" class="form-input" />
+                    <span class="unit-label">pages</span>
+                </div>
+                <small class="input-hint">Full Quran = 604 pages (30 Juz)</small>
+            </div>
+
+            <div class="calculator-group">
+                <label for="studyDaysPerWeek">Study Days Per Week</label>
+                <div class="input-with-unit">
+                    <input id="studyDaysPerWeek" type="number" min="1" max="7" value="6" class="form-input" />
+                    <span class="unit-label">days</span>
+                </div>
+                <small class="input-hint">Days you study each week</small>
+            </div>
+
+            <button class="btn-primary btn-calculate" id="calculateBtn">Calculate Completion Date</button>
+
+            <div id="calculatorResult" class="calculator-result" style="display: none;">
+                <div class="result-box">
+                    <h3>Results</h3>
+                    <div class="result-item">
+                        <span class="result-label">Days Needed:</span>
+                        <span class="result-value" id="daysNeeded">—</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Estimated Completion:</span>
+                        <span class="result-value" id="completionDate">—</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Weeks Required:</span>
+                        <span class="result-value" id="weeksNeeded">—</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Total Study Days:</span>
+                        <span class="result-value" id="totalStudyDays">—</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Milestone Badges Section -->
+    <section id="badgesSection" class="badges-section" style="display: none;">
+        <h2>Milestone Badges</h2>
+        <p class="calculator-subtitle">Unlock digital badges for your Hifz journey</p>
+
+        <div class="badges-grid">
+            <div class="badge-card unlocked">
+                <div class="badge-icon">🏆</div>
+                <h3>Juz 30 Complete</h3>
+                <p>Celebrate the final Juz memorized.</p>
+                <span class="badge-status">Unlocked</span>
+            </div>
+            <div class="badge-card">
+                <div class="badge-icon">✨</div>
+                <h3>Half Quran</h3>
+                <p>Reach the 302-page milestone.</p>
+                <span class="badge-status">Locked</span>
+            </div>
+            <div class="badge-card">
+                <div class="badge-icon">📜</div>
+                <h3>Surah Completion</h3>
+                <p>Finish any Surah from start to end.</p>
+                <span class="badge-status">Locked</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Study Mode Section -->
+    <section id="studySection" class="study-section" style="display: none;">
+        <div class="study-header">
+            <div>
+                <h2>Immersive Study Mode</h2>
+                <p class="calculator-subtitle">Open a Surah and enter a distraction-free flow state.</p>
+            </div>
+            <button class="btn-primary" id="openStudyMode">Open Focus Mode</button>
+        </div>
+
+        <div class="study-content">
+            <div class="surah-list">
+                <h3>Surah Library</h3>
+                <button class="surah-item">Al-Fatiha</button>
+                <button class="surah-item">Yaseen</button>
+                <button class="surah-item">Al-Mulk</button>
+                <button class="surah-item">Ar-Rahman</button>
+                <button class="surah-item">Al-Ikhlas</button>
+            </div>
+
+            <div class="study-info">
+                <div class="mistake-log-card">
+                    <h3>Mistake Logging</h3>
+                    <p>Record Tajweed notes and recitation errors from your session.</p>
+                    <textarea id="mistakeNotes" placeholder="Write mistakes or notes here..." class="form-input"></textarea>
+                    <button class="btn-primary" id="saveNotesBtn">Save Notes</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="app.js"></script>
+</body>
+</html>
